@@ -12,11 +12,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import java.util.ArrayList;
+import paquete4.Profesor;
 
 public class LecturaArchivoSecuencial {
 
     private ObjectInputStream entrada;
     private ArrayList<Hospital> hospitales;
+    private String Busnom;
+    private Hospital hospitalBuscado;
     private String nombreArchivo;
 
     public LecturaArchivoSecuencial(String n) {
@@ -48,6 +51,42 @@ public class LecturaArchivoSecuencial {
                 try {
                     Hospital registro = (Hospital)entrada.readObject();
                     hospitales.add(registro);
+                } catch (EOFException endOfFileException) {
+                    return; // se llegó al fin del archivo
+                    // se puede usar el break;
+                    // System.err.println("Fin de archivo: " + endOfFileException);
+
+                } catch (IOException ex) {
+                    System.err.println("Error al leer el archivo: " + ex);
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("No se pudo crear el objeto: " + ex);
+                } catch (Exception ex) {
+                    System.err.println("No hay datos en el archivo: " + ex);
+
+                }
+            }
+        }
+    }
+    
+    public void establecerBusNombre(String nombre){
+        Busnom = nombre;
+    }
+    
+    public void establecerHospitalBuscado() {
+        // 
+        
+        File f = new File(obtenerNombreArchivo());
+        if (f.exists()) {
+
+            while (true) {
+                try {
+                    Hospital registro = (Hospital) entrada.readObject();
+                    
+                    if(registro.obtenerNombre().equals(Busnom)){
+                        hospitalBuscado = registro;
+                        break;
+                    }
+                    
                 } catch (EOFException endOfFileException) {
                     return; // se llegó al fin del archivo
                     // se puede usar el break;

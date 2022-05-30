@@ -70,6 +70,7 @@ public class EscrituraArchivoSecuencial {
         listaHospitales = l.obtenerHospitales();
     }
 
+
     public String obtenerNombreArchivo(){
         return nombreArchivo;
     }
